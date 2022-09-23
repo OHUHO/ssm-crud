@@ -1,28 +1,44 @@
-table.gridtable {
-	width:100%;
-	font-family: verdana,arial,sans-serif;
-	font-size:11px;
-	color:green;
-	border-width: 1px;
-	border-color: #666666;
-	border-collapse: collapse;
+@import url(https://fonts.googleapis.com/css?family=Exo);
+.myTable,
+.table th{
+    text-align:center
 }
-table.gridtable th {
-	border-width: 1px;
-	padding: 8px;
-	border-style: solid;
-	border-color: #666666;
-	background-color: pink;
-	text-align: center;
+*{
+    margin:0;
+    padding:0
 }
-table.gridtable td {
-	border-width: 1px;
-	padding: 8px;
-	border-style: solid;
-	border-color: #666666;
-	background-color: #ffffff;
-	text-align: center;
+
+body{
+    font-family:Exo,sans-serif;
+    background-image:linear-gradient(120deg,rgba(168,242,255,.6) 0%, rgba(86,89,202,.8) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-a{
-  	text-decoration: none;
+.box{
+    border-radius: 20px;
+    margin:60px 10px;
+    background-color: white;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+}
+.myTable{
+    margin-top:50px
+}
+.myAlert{
+    margin:50px 0 -30px;
+}
+
+.alert h4{
+    margin:0
+}
+span{
+    color:red
+}
+
+.modal{
+    margin-top: 99px;
 }

@@ -3,8 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <title>SSM-CRUD</title>
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+    <link rel="stylesheet" th:href="@{/static/bootstrap-3.4.1-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
 </head>
 <body>
+<div class="box">
+
+    <!-- 标题 -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <hr/><h3 class="text-center">SSM —— CRUD</h3><hr/>
+            </div>
+        </div>
+    </div>
+    <!-- 表格区域 -->
+    <div class="container">
+        <div class="row content">
+            <div class="col-md-12">
+                <!-- 操作按钮 -->
+                <button class="btn btn-info pull-right" data-toggle="modal" data-target="#addModal">Add New</button>
+                <!-- 操作后状态提示 -->
+                <div class="alert alert-warning fade in myAlert" ng-if="alertMassege">
+                    <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                    <h4>{{alertMassege}}</h4>
+                </div>
+                <table class="table table-bordered myTable">
+                    <tr class="text-center">
+                        <th>Index</th>
+                        <th>Name</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    <tbody>
+                    <tr ng-repeat="user in users">
+                        <td>{{$index+1}}</td>
+                        <td>{{user.name}}</td>
+                        <td>{{user.fullname}}</td>
+                        <td>{{user.email}}</td>
+                        <td>
+                            <button class="btn btn-warning" data-toggle="modal" data-target="#editModal" ng-click="selectUser(user)">Edit</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="selectUser(user)">Delete</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Add Modal-->
+    <div class="modal fade" id="addModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Add New</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="Name">Name</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="text" placeholder="Enter Name" ng-model="newUser.name"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="full name">Full Name</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="text" placeholder="Enter Full Name" ng-model="newUser.fullname"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="email">Full Name</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="email" placeholder="Enter Email" ng-model="newUser.email"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" ng-click="saveUser()" data-dismiss="modal">Save</button>
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Modal-->
+    <div class="modal fade" id="editModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Edit</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="Name">Name</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="text" ng-model="clickedUser.name"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="full name">Full Name</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="text" ng-model="clickedUser.fullname"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="email">Email</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="email" ng-model="clickedUser.email"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" ng-click="updateUser()" data-dismiss="modal">Save</button>
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Modal-->
+    <div class="modal fade" id="deleteModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Delete</h4>
+                </div>
+                <div class="modal-body">
+                    <h3>Are you sure to delete <span>{{clickedUser.fullname}}</span>????</h3>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" ng-click="deleteUser()" data-dismiss="modal">Yes</button>
+                    <button class="btn btn-primary" type="button" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" th:src="@{/static/js/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/static/bootstrap-3.4.1-dist/js/bootstrap.min.js}"></script>
 
 </body>
+
 </html>
