@@ -162,7 +162,7 @@ MyBatis版本：MyBatis 3.5.10
 
 ```properties
 jdbc.driver=com.mysql.cj.jdbc.Driver
-jdbc.url=jdbc:mysql://localhost:3306/ssm?serverTimezone=UTC
+jdbc.url=jdbc:mysql://localhost:3306/ssm_crud?serverTimezone=UTC
 jdbc.username=root
 jdbc.password=123456
 ```
