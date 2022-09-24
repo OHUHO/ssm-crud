@@ -3,7 +3,7 @@ package com.jingchao.entity;
 public class Department {
     private Integer id;
 
-    private String name;
+    private String deptName;
 
     private Integer parentid;
 
@@ -21,12 +21,12 @@ public class Department {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getDeptName() {
+        return deptName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 
     public Integer getParentid() {

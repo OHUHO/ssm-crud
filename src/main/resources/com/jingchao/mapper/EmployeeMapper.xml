@@ -3,13 +3,22 @@
 
 <mapper namespace="com.jingchao.mapper.EmployeeMapper">
 
-	<resultMap id="empResultMap" type="com.jingchao.pojo.Emp">
-
+	<resultMap id="empResultMap" type="java.util.HashMap">
+		<id column="id" property="id"></id>
+		<result column="name" property="name"></result>
+		<result column="gender" property="gender"></result>
+		<result column="email" property="email"></result>
+		<result column="phone" property="phone"></result>
+		<result column="departmentId" property="department.id"></result>
+		<result column="name" property="department.deptName"></result>
 	</resultMap>
 
-	<!-- List<Emp> getAllEmployee(); -->
+	<!-- List<Map<String, Object>> getAllEmployee(); -->
 	<select id="getAllEmployee" resultMap="empResultMap">
-		select id,name,gender,email from t_employee
+		select t_employee.id,t_employee.name,gender,email,phone,t_employee.departmentId,t_department.name
+		from t_employee
+		    left join t_department on
+		        t_employee.departmentId = t_department.id
 	</select>
 
 

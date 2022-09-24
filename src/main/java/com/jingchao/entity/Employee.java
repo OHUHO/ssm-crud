@@ -61,6 +61,8 @@ public class Employee {
 
     private Integer salaryid;
 
+    private Department department;
+
     public Integer getId() {
         return id;
     }
@@ -291,5 +293,13 @@ public class Employee {
 
     public void setSalaryid(Integer salaryid) {
         this.salaryid = salaryid;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }
