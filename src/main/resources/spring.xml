@@ -38,7 +38,7 @@
 		<!-- 设置数据源 -->
 		<property name="dataSource" ref="dataSource"/>
 		<!-- 设置类型别名所对应的包 -->
-		<property name="typeAliasesPackage" value="com.jingchao.pojo"/>
+		<property name="typeAliasesPackage" value="com.jingchao.entity"/>
 		<!-- 设置映射文件的位置，只有当映射文件和接口的包名不一致的情况才设置 -->
 		<!-- <property name="mapperLocations" value="classpath:mapper/*.xml"/> -->
 		<!-- 配置插件 -->

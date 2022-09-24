@@ -377,7 +377,97 @@ File ——> Project Structure
 
 
 
-## 六、
+## 六、开发前端页面
+
+在WEB-INF下新建文件夹templates，然后新建index.html，使用bootstrap快速搭建前端页面，前端页面使用的资源：
+
+- bootstrap-3-4-1-dist
+- axios.min.js
+- jquery-2.2.4.min.js
+
+
+
+```html
+这是胜利
+```
+
+
+
+## 七、功能实现
+
+### 一、准备工作
+
+- JavaBean
+	- Employee
+	- Department
+
+### 二、分页展示
+
+#### 1、Controller层
+
+```java
+@Autowired
+private EmployeeService employeeService;
+
+@RequestMapping("/employee/page/{pageNum}")
+public String getEmployeePage(@PathVariable("pageNum") Integer pageNum, Model model){
+    PageInfo<Employee> page =  employeeService.getEmployeePage(pageNum);
+    model.addAttribute("page", page);
+    return "index";
+}
+```
+
+#### 2、Service层
+
+```java
+/**
+ * 获取员工的分页信息
+ * @param pageNum
+ * @return
+ */
+PageInfo<Employee> getEmployeePage(Integer pageNum);
+```
+
+```java
+@Autowired
+private EmployeeMapper employeeMapper;
+
+@Override
+public PageInfo<Employee> getEmployeePage(Integer pageNum) {
+    // 开启分页功能
+    PageHelper.startPage(pageNum,5);
+    // 查询所有员工
+    List<Employee> list =  employeeMapper.getAllEmployee();
+    // 获取分页相关数据
+    PageInfo<Employee> pageInfo = new PageInfo<>(list, 5);
+    return pageInfo;
+}
+```
+
+#### 3、Mapper层
+
+```java
+/**
+ * 获取员工的分页信息
+ * @return
+ */
+List<Employee> getAllEmployee();
+```
+
+```xml
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

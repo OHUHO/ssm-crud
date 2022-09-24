@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SSM-CRUD</title>
+    <link rel="stylesheet" th:href="@{/static/bootstrap-3.4.1-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+</head>
+<body>
+<div class="container box">
+
+    <!-- 标题 -->
+    <div class="row">
+        <div class="col-md-12">
+            <hr/><h3 class="text-center">SSM —— CRUD</h3><hr/>
+        </div>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="row">
+        <div class="col-md-3 pull-right form-group has-feedback">
+            <input type="text" class="form-control has-feedback-left" placeholder="搜索">
+        </div>
+        <div class="pull-right">
+            <button type="button"
+                    class="btn btn-info"
+                    data-toggle="modal"
+                    data-target="#addModal">
+                <span class="glyphicon glyphicon-plus"></span>
+                Add
+            </button>
+            <button type="button"
+                    class="btn btn-danger"
+                    data-toggle="modal"
+                    data-target="#deleteModal">
+                <span class="glyphicon glyphicon-trash"></span>
+                Delete
+            </button>
+        </div>
+    </div>
+
+    <!-- 操作后状态提示 -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <a class="close" href="#" data-dismiss="alert">×</a>
+                <h4>{{alertMassege}}</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- 表格区域 -->
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <tr class="text-center">
+                    <th><input type="checkbox"></th>
+                    <th>Index</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                <tr class="text-center" th:each="employee,status : ${page.list}">
+                    <td><input type="checkbox"></td>
+                    <td th:text="${status.count}"></td>
+                    <td th:text="${employee.name}"></td>
+                    <td th:text="${employee.gender}"></td>
+                    <td th:text="${employee.email}"></td>
+                    <td th:text="${employee.phone}"></td>
+                    <td th:text="${employee.department}"></td>
+                    <td>
+                        <button class="btn btn-warning btn-sm"
+                                data-toggle="modal"
+                                data-target="#editModal">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            Edit
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm"
+                                data-toggle="modal"
+                                data-target="#deleteModal">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h6 th:text="@{'恭喜您，您已经走了 '+${page.pageNum}+'/'+${page.pages}+' 的路程！'}"></h6>
+        </div>
+        <div class="col-md-6 pull-right navigation-page">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li><a th:href="@{/employee/page/1}">首页</a></li>
+                    <li>
+                        <a th:href="@{'/employee/page/'+${page.prePage}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:each="num : ${page.navigatepageNums}">
+                        <a th:if="${page.pageNum == num}" th:href="@{'/employee/page/'+${num}}" th:text="${num}"></a>
+                        <a th:if="${page.pageNum != num}" th:href="@{'/employee/page/'+${num}}" th:text="${num}"></a>
+                    </li>
+                    <li>
+                        <a th:href="@{'/employee/page/'+${page.nextPage}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li><a th:href="@{'/employee/page/'+${page.pages}}">尾页</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+
+    <!-- Add Modal-->
+    <div class="modal fade" id="addModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Add New</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="Name">Name</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="text" placeholder="Enter Name" ng-model="newUser.name"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="full name">Full Name</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="text" placeholder="Enter Full Name" ng-model="newUser.fullname"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="email">Full Name</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="email" placeholder="Enter Email" ng-model="newUser.email"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" ng-click="saveUser()" data-dismiss="modal">Save</button>
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Modal-->
+    <div class="modal fade" id="editModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Edit</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="Name">Name</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="text" ng-model="clickedUser.name"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="full name">Full Name</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="text" ng-model="clickedUser.fullname"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="email">Email</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="email" ng-model="clickedUser.email"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" ng-click="updateUser()" data-dismiss="modal">Save</button>
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Modal-->
+    <div class="modal fade" id="deleteModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Delete</h4>
+                </div>
+                <div class="modal-body">
+                    <h3>Are you sure to delete <span>{{clickedUser.fullname}}</span>????</h3>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" ng-click="deleteUser()" data-dismiss="modal">Yes</button>
+                    <button class="btn btn-primary" type="button" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" th:src="@{/static/js/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/static/bootstrap-3.4.1-dist/js/bootstrap.min.js}"></script>
+
+</body>
+
+</html>
