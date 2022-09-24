@@ -4,21 +4,32 @@
 <mapper namespace="com.jingchao.mapper.EmployeeMapper">
 
 	<resultMap id="empResultMap" type="java.util.HashMap">
+		<!-- <id column="id1" property="id"></id> -->
 		<id column="id" property="id"></id>
 		<result column="name" property="name"></result>
 		<result column="gender" property="gender"></result>
 		<result column="email" property="email"></result>
 		<result column="phone" property="phone"></result>
+		<!-- <association property="department" javaType="java.util.HashMap">
+			<id column="id2" property="id"></id>
+			<result column="dept_name" property="deptName"></result>
+		</association> -->
 		<result column="departmentId" property="department.id"></result>
-		<result column="name" property="department.deptName"></result>
+		<result column="dept_name" property="department.deptName"></result>
 	</resultMap>
 
 	<!-- List<Map<String, Object>> getAllEmployee(); -->
-	<select id="getAllEmployee" resultMap="empResultMap">
-		select t_employee.id,t_employee.name,gender,email,phone,t_employee.departmentId,t_department.name
+	<!-- <select id="getAllEmployee" resultMap="empResultMap">
+		select t_employee.id as id1,t_employee.name,gender,email,phone,t_employee.departmentId as id2,t_department.dept_name
 		from t_employee
 		    left join t_department on
 		        t_employee.departmentId = t_department.id
+	</select> -->
+	<select id="getAllEmployee" resultMap="empResultMap">
+		select t_employee.id,t_employee.name,gender,email,phone,t_employee.departmentId,t_department.dept_name
+		from t_employee
+			     left join t_department on
+			t_employee.departmentId = t_department.id
 	</select>
 
 
