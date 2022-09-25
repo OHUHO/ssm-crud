@@ -19,7 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeMapper employeeMapper;
 
     @Override
-    /* public PageInfo<Map<String, Object>> getEmployeePage(Integer pageNum) {
+   /*  public PageInfo<Map<String, Object>> getEmployeePage(Integer pageNum) {
         // 开启分页功能
         PageHelper.startPage(pageNum,12);
         // 查询所有员工

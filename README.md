@@ -379,7 +379,7 @@ File ——> Project Structure
 
 ## 六、开发前端页面
 
-在WEB-INF下新建文件夹templates，然后新建index.html，使用bootstrap快速搭建前端页面，前端页面使用的资源：
+在WEB-INF下新建文件夹templates，然后新建index.html和employee.html，使用bootstrap快速搭建前端页面，前端页面使用的资源如下：
 
 - bootstrap-3-4-1-dist
 - axios.min.js
@@ -395,15 +395,17 @@ File ——> Project Structure
 
 ## 七、功能实现
 
-### 一、准备工作
+### 1、准备工作
 
 - JavaBean
 	- Employee
 	- Department
 
-### 二、分页展示
+### 2、分页展示
 
-#### 1、Controller层
+#### 2.1、方法一：返回Map
+
+##### ① Controller层
 
 ```java
 @Autowired
@@ -411,21 +413,22 @@ private EmployeeService employeeService;
 
 @RequestMapping("/employee/page/{pageNum}")
 public String getEmployeePage(@PathVariable("pageNum") Integer pageNum, Model model){
-    PageInfo<Employee> page =  employeeService.getEmployeePage(pageNum);
+    PageInfo<Map<String, Object>> page =  employeeService.getEmployeePage(pageNum);
     model.addAttribute("page", page);
-    return "index";
+    return "employee";
 }
 ```
 
-#### 2、Service层
+##### ② Service层
 
 ```java
 /**
  * 获取员工的分页信息
+ *
  * @param pageNum
  * @return
  */
-PageInfo<Employee> getEmployeePage(Integer pageNum);
+PageInfo<Map<String, Object>> getEmployeePage(Integer pageNum);
 ```
 
 ```java
@@ -433,28 +436,131 @@ PageInfo<Employee> getEmployeePage(Integer pageNum);
 private EmployeeMapper employeeMapper;
 
 @Override
-public PageInfo<Employee> getEmployeePage(Integer pageNum) {
+public PageInfo<Map<String, Object>> getEmployeePage(Integer pageNum) {
     // 开启分页功能
-    PageHelper.startPage(pageNum,5);
+    PageHelper.startPage(pageNum,12);
     // 查询所有员工
-    List<Employee> list =  employeeMapper.getAllEmployee();
+    List<Map<String, Object>> list = employeeMapper.getAllEmployee();
     // 获取分页相关数据
-    PageInfo<Employee> pageInfo = new PageInfo<>(list, 5);
+    PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list, 5);
     return pageInfo;
 }
 ```
 
-#### 3、Mapper层
+##### ③ Mapper层
+
+```java
+/**
+ * 获取所有员工信息
+ * @return
+ */
+List<Map<String, Object>> getAllEmployee();
+```
+
+```xml
+<resultMap id="empResultMap" type="java.util.HashMap">
+    <id column="id" property="id"></id>
+    <!-- <id column="id1" property="id"></id> -->
+    <result column="name" property="name"></result>
+    <result column="gender" property="gender"></result>
+    <result column="email" property="email"></result>
+    <result column="phone" property="phone"></result>
+    <!-- 方式一 -->
+    <result column="departmentId" property="department.id"></result>
+    <result column="dept_name" property="department.deptName"></result>
+    <!-- 方式二 -->
+    <!-- <association property="department" javaType="java.util.HashMap">
+   		<id column="id2" property="id"></id>
+   		<result column="dept_name" property="deptName"></result>
+  	</association> -->
+</resultMap>
+<select id="getAllEmployee" resultMap="empResultMap">
+    select t_employee.id,t_employee.name,gender,email,phone,t_employee.departmentId,t_department.dept_name
+    from t_employee
+    left join t_department on
+    t_employee.departmentId = t_department.id
+</select>
+<!-- <select id="getAllEmployee" resultMap="empResultMap">
+  select t_employee.id as id1,t_employee.name,gender,email,phone,t_employee.departmentId as id2,t_department.dept_name
+  from t_employee
+      left join t_department on
+          t_employee.departmentId = t_department.id
+</select> -->
+```
+
+
+
+#### 2.2、方法二：返回一个实体Emp
+
+先自定义一个Emp实体，其中的属性就是需要返回给前端的信息
+
+##### ① Controller层
+
+```java
+@Autowired
+private EmployeeService employeeService;
+
+@RequestMapping("/employee/page/{pageNum}")
+public String getEmployeePage(@PathVariable("pageNum") Integer pageNum, Model model){
+    PageInfo<Emp> page =  employeeService.getEmployeePage(pageNum);
+    model.addAttribute("page", page);
+    return "index";
+}
+```
+
+##### ② Service层
+
+```java
+/**
+ * 获取员工的分页信息
+ * @param pageNum
+ * @return
+ */
+PageInfo<Emp> getEmployeePage(Integer pageNum);
+```
+
+```java
+@Autowired
+private EmployeeMapper employeeMapper;
+
+@Override
+public PageInfo<Emp> getEmployeePage(Integer pageNum) {
+    // 开启分页功能
+    PageHelper.startPage(pageNum,5);
+    // 查询所有员工
+    List<Emp> list =  employeeMapper.getAllEmployee();
+    // 获取分页相关数据
+    PageInfo<Emp> pageInfo = new PageInfo<>(list, 5);
+    return pageInfo;
+}
+```
+
+##### ③ Mapper层
 
 ```java
 /**
  * 获取员工的分页信息
  * @return
  */
-List<Employee> getAllEmployee();
+List<Emp> getAllEmployee();
 ```
 
 ```xml
+<resultMap id="empResultMap" type="com.jingchao.pojo.Emp">
+    <id column="id" property="id"></id>
+    <result column="name" property="name"></result>
+    <result column="gender" property="gender"></result>
+    <result column="email" property="email"></result>
+    <result column="phone" property="phone"></result>
+    <result column="departmentId" property="deptId"></result>
+    <result column="dept_name" property="deptName"></result>
+</resultMap>
+<select id="getAllEmployee" resultMap="empResultMap">
+    select t_employee.id,t_employee.name,gender,email,phone,t_employee.departmentId,t_department.dept_name
+    from t_employee
+    left join t_department on
+    t_employee.departmentId = t_department.id
+</select>
 ```
 
 
