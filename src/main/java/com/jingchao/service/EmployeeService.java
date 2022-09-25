@@ -13,7 +13,6 @@ public interface EmployeeService {
      * @param pageNum
      * @return
      */
-    // PageInfo<Map<String, Object>> getEmployeePage(Integer pageNum);
     PageInfo<Emp> getEmployeePage(Integer pageNum);
 
 

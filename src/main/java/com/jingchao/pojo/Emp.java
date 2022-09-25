@@ -3,6 +3,7 @@ package com.jingchao.pojo;
 public class Emp {
     private Integer id;
 
+    private String workId;
     private String name;
 
     private String gender;
@@ -18,8 +19,9 @@ public class Emp {
     public Emp() {
     }
 
-    public Emp(Integer id, String name, String gender, String email, String phone, Integer deptId, String deptName) {
+    public Emp(Integer id, String workId, String name, String gender, String email, String phone, Integer deptId, String deptName) {
         this.id = id;
+        this.workId = workId;
         this.name = name;
         this.gender = gender;
         this.email = email;
@@ -34,6 +36,14 @@ public class Emp {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getWorkId() {
+        return workId;
+    }
+
+    public void setWorkId(String workId) {
+        this.workId = workId;
     }
 
     public String getName() {
@@ -88,6 +98,7 @@ public class Emp {
     public String toString() {
         return "Emp{" +
                 "id=" + id +
+                ", workId='" + workId + '\'' +
                 ", name='" + name + '\'' +
                 ", gender='" + gender + '\'' +
                 ", email='" + email + '\'' +

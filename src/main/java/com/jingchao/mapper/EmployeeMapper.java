@@ -14,6 +14,6 @@ public interface EmployeeMapper {
      * @return
      */
     // List<Map<String, Object>> getAllEmployeeOne();
-    List<Emp> getAllEmployeeTwo();
+    List<Emp> getAllEmployee();
 
 }

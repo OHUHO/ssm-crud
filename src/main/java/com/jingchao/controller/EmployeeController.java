@@ -20,12 +20,6 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @RequestMapping("/employee/page/{pageNum}")
-    /* public String getEmployeePage(@PathVariable("pageNum") Integer pageNum, Model model){
-        PageInfo<Map<String, Object>> page =  employeeService.getEmployeePage(pageNum);
-        model.addAttribute("page", page);
-        return "employee";
-    } */
-
     public String getEmployeePage(@PathVariable("pageNum") Integer pageNum, Model model){
         PageInfo<Emp> page = employeeService.getEmployeePage(pageNum);
         model.addAttribute("page", page);

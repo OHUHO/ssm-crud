@@ -3,39 +3,10 @@
 
 <mapper namespace="com.jingchao.mapper.EmployeeMapper">
 
-	<!-- 方式一： 返回一个Map -->
-	<resultMap id="empResultMapOne" type="java.util.HashMap">
-		<!-- <id column="id1" property="id"></id> -->
+
+	<resultMap id="empResultMap" type="com.jingchao.pojo.Emp">
 		<id column="id" property="id"></id>
-		<result column="name" property="name"></result>
-		<result column="gender" property="gender"></result>
-		<result column="email" property="email"></result>
-		<result column="phone" property="phone"></result>
-		<!-- <association property="department" javaType="java.util.HashMap">
-			<id column="id2" property="id"></id>
-			<result column="dept_name" property="deptName"></result>
-		</association> -->
-		<result column="departmentId" property="department.id"></result>
-		<result column="dept_name" property="department.deptName"></result>
-	</resultMap>
-
-	<!-- <select id="getAllEmployee" resultMap="empResultMap">
-		select t_employee.id as id1,t_employee.name,gender,email,phone,t_employee.departmentId as id2,t_department.dept_name
-		from t_employee
-		    left join t_department on
-		        t_employee.departmentId = t_department.id
-	</select> -->
-	<select id="getAllEmployeeOne" resultMap="empResultMapOne">
-		select t_employee.id,t_employee.name,gender,email,phone,t_employee.departmentId,t_department.dept_name
-		from t_employee
-			     left join t_department on
-			t_employee.departmentId = t_department.id
-	</select>
-
-
-	<!-- 方式二：返回一个自定义的Emp对象 -->
-	<resultMap id="empResultMapTwo" type="com.jingchao.pojo.Emp">
-		<id column="id" property="id"></id>
+		<result column="workId" property="workId"></result>
 		<result column="name" property="name"></result>
 		<result column="gender" property="gender"></result>
 		<result column="email" property="email"></result>
@@ -43,8 +14,8 @@
 		<result column="departmentId" property="deptId"></result>
 		<result column="dept_name" property="deptName"></result>
 	</resultMap>
-	<select id="getAllEmployeeTwo" resultMap="empResultMapTwo">
-		select t_employee.id,t_employee.name,gender,email,phone,t_employee.departmentId,t_department.dept_name
+	<select id="getAllEmployee" resultMap="empResultMap">
+		select t_employee.id,workId,name,gender,email,phone,t_employee.departmentId,t_department.dept_name
 		from t_employee
 			     left join t_department on
 			t_employee.departmentId = t_department.id
