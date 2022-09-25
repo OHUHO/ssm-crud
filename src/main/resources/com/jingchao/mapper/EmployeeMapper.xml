@@ -24,7 +24,7 @@
 
 	<!-- void addNewEmployee(Emp emp); -->
 	<insert id="addNewEmployee">
-		insert into t_employee(id,name,gender,email,phone,departmentId) values (null,#{name},#{gender},#{email},#{phone},#{deptId})
+		insert into t_employee(id,name,workId,gender,email,phone,departmentId) values (null,#{name},#{workId},#{gender},#{email},#{phone},#{deptId})
 	</insert>
 
 </mapper>

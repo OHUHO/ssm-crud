@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -21,12 +22,14 @@ public class EmployeeController {
     public String getEmployeePage(@PathVariable("pageNum") Integer pageNum, Model model){
         PageInfo<Emp> page = employeeService.getEmployeePage(pageNum);
         model.addAttribute("page", page);
+        System.out.println(page);
         return "employee";
     }
 
     @PostMapping("/employee")
-    public void addNewEmployee(Emp emp){
+    public String addNewEmployee(@RequestBody Emp emp){
         employeeService.addNewEmployee(emp);
+        return "redirect:/employee/page/1";
     }
 
 }
