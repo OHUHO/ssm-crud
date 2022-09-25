@@ -28,4 +28,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         PageInfo<Emp> pageInfo = new PageInfo<>(list, 5);
         return pageInfo;
     }
+
+    @Override
+    public void addNewEmployee(Emp emp) {
+        employeeMapper.addNewEmployee(emp);
+    }
 }

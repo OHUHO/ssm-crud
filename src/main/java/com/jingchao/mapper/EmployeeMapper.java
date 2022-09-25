@@ -16,4 +16,9 @@ public interface EmployeeMapper {
     // List<Map<String, Object>> getAllEmployeeOne();
     List<Emp> getAllEmployee();
 
+    /**
+     * 添加新员工
+     * @param emp
+     */
+    void addNewEmployee(Emp emp);
 }

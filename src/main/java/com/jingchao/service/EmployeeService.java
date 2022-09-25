@@ -3,8 +3,6 @@ package com.jingchao.service;
 import com.github.pagehelper.PageInfo;
 import com.jingchao.pojo.Emp;
 
-import java.util.Map;
-
 public interface EmployeeService {
 
     /**
@@ -15,5 +13,9 @@ public interface EmployeeService {
      */
     PageInfo<Emp> getEmployeePage(Integer pageNum);
 
-
+    /**
+     * 保存新员工
+     * @param emp
+     */
+    void addNewEmployee(Emp emp);
 }

@@ -43,8 +43,8 @@
     <!-- 操作后状态提示 -->
     <div class="row">
         <div class="col-md-12">
-            <div class="alert alert-info">
-                <a class="close" href="#" data-dismiss="alert">×</a>
+            <div class="alert alert-info" v-if="alertMessage">
+                <a class="close" href="#" data-dismiss="alert" @click="clickedAlert()">×</a>
                 <h4>{{alertMessage}}</h4>
             </div>
         </div>
@@ -138,39 +138,58 @@
                     <div class="container">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Name</label>
+                                <label class="control-label col-sm-2">Name</label>
                                 <div class="col-sm-3">
-                                    <input class="form-control" type="text" placeholder="Enter Name"/>
+                                    <input class="form-control"
+                                           type="text"
+                                           placeholder="Enter Name"
+                                           v-model="newEmployee.name"/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="gender">Gender</label>
+                                <label class="control-label col-sm-2">Gender</label>
                                 <div class="col-sm-3">
                                     <label class="radio-inline">
-                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">男
+                                        <input type="radio"
+                                               name="inlineRadioOptions"
+                                               id="inlineRadio1"
+                                               value="男"
+                                               v-model="newEmployee.gender">男
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">女
+                                        <input type="radio"
+                                               name="inlineRadioOptions"
+                                               id="inlineRadio2"
+                                               value="女"
+                                               v-model="newEmployee.gender">女
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="email">Email</label>
+                                <label class="control-label col-sm-2">Email</label>
                                 <div class="col-sm-3">
-                                    <input class="form-control" type="email" placeholder="Enter Email"/>
+                                    <input class="form-control"
+                                           type="email"
+                                           placeholder="Enter Email"
+                                           v-model="newEmployee.email"/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="phone">Phone</label>
+                                <label class="control-label col-sm-2">Phone</label>
                                 <div class="col-sm-3">
-                                    <input class="form-control" type="text" placeholder="Enter Phone"/>
+                                    <input class="form-control"
+                                           type="text"
+                                           placeholder="Enter Phone"
+                                           v-model="newEmployee.phone"/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="department">Department</label>
+                                <label class="control-label col-sm-2">Department</label>
                                 <div class="col-sm-3">
-                                    <select class="form-control">
-                                        <option v-for="department in allDepartment">{{department.deptName}}</option>
+                                    <select class="form-control" @change="change($event)">
+                                        <option v-for="department in allDepartment" :value="department.id">
+                                            {{department.deptName}}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -178,7 +197,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" type="button" data-dismiss="modal">Save</button>
+                    <button class="btn btn-success"
+                            type="button"
+                            data-dismiss="modal"
+                            @click="addNewEmployee()">
+                        Save
+                    </button>
                     <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -218,7 +242,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" type="button"  data-dismiss="modal">Save</button>
+                    <button class="btn btn-success"
+                            type="button"
+                            data-dismiss="modal"
+                            @click="">
+                        Save
+                    </button>
                     <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -253,14 +282,25 @@
     const vue = new Vue({
         el: '#app',
         data:{
-            alertMessage:'',
+            alertMessage:null,
             allDepartment: null,
+            newEmployee:{id:null,workId:'',name:'',gender:'',email:'',phone:'',deptId:''},
         },
         methods:{
             getAllDepartment(){
                 axios.get("/crud/all/department").then(resp => {
-                    console.log(resp.data)
                     this.allDepartment = resp.data
+                })
+            },
+            change(event){
+                this.newEmployee.deptId = event.target.value
+            },
+            clickedAlert(){
+                this.alertMessage = null;
+            },
+            addNewEmployee(){
+                axios.post("/employee",this.newEmployee).then(resp => {
+                    this.alertMessage = 'New employee add on list successfully!'
                 })
             }
         }
