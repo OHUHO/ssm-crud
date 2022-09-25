@@ -23,7 +23,6 @@ public class EmployeeController {
     public String getEmployeePage(@PathVariable("pageNum") Integer pageNum, Model model){
         PageInfo<Emp> page = employeeService.getEmployeePage(pageNum);
         model.addAttribute("page", page);
-        System.out.println(page.toString());
         return "employee";
     }
 

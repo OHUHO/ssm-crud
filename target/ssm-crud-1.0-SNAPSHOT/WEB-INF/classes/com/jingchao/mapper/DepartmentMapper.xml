@@ -3,4 +3,14 @@
 
 <mapper namespace="com.jingchao.mapper.DepartmentMapper">
 
+	<resultMap id="deptResultMap" type="java.util.HashMap">
+		<id column="id" property="id"></id>
+		<result column="dept_name" property="deptName"></result>
+	</resultMap>
+
+	<!-- List<Map<String, Object>> getAllDepartment(); -->
+	<select id="getAllDepartment" resultMap="deptResultMap">
+		select id,dept_name from t_department
+	</select>
+
 </mapper>
