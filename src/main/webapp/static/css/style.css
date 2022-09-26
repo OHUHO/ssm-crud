@@ -41,3 +41,6 @@ body{
     margin-top: 99px;
 }
 
+span, a{
+    cursor: pointer;
+}
