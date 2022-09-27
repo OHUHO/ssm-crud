@@ -115,30 +115,26 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li :class="{disabled:employeePage.isFirstPage}">
-                        <a @click="getEmployeePage(1)">首页</a>
+                        <a href="#" @click.prevent="!employeePage.isFirstPage && getEmployeePage(1)">首页</a>
                     </li>
                     <li :class="{disabled:employeePage.isFirstPage}">
-                        <a aria-label="Previous" @click="getEmployeePage(employeePage.prePage)">
+                        <a href="#" aria-label="Previous"
+                           @click.prevent="!employeePage.isFirstPage && getEmployeePage(employeePage.prePage)">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li :class="{active:employeePage.pageNum == num}"
                         v-for="num in employeePage.navigatepageNums">
-                        <a @click="getEmployeePage(num)">{{num}}</a>
+                        <a href="#" @click.prevent="getEmployeePage(num)">{{num}}</a>
                     </li>
                     <li :class="{disabled:employeePage.isLastPage}">
-                        <a aria-label="Next"
-                           v-if="employeePage.isLastPage">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                        <a aria-label="Next"
-                           v-else
-                           @click="getEmployeePage(employeePage.nextPage)">
+                        <a href="#" aria-label="Next"
+                           @click.prevent="!employeePage.isLastPage && getEmployeePage(employeePage.nextPage)">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                     <li :class="{disabled:employeePage.isLastPage}">
-                        <a @click="getEmployeePage(employeePage.pages)">尾页</a>
+                        <a href="#" @click.prevent="!employeePage.isLastPage && getEmployeePage(employeePage.pages)">尾页</a>
                     </li>
                 </ul>
             </nav>
@@ -148,7 +144,6 @@
     <!-- 添加窗口 -->
     <div class="modal fade" id="addModal" role="dialog">
         <div class="modal-dialog">
-            <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button class="close" type="button" data-dismiss="modal">×</button>

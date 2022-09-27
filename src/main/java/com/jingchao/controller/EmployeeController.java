@@ -30,9 +30,8 @@ public class EmployeeController {
     } */
 
     @PostMapping("/employee")
-    public String addNewEmployee(@RequestBody Emp emp){
+    public void addNewEmployee(@RequestBody Emp emp){
         employeeService.addNewEmployee(emp);
-        return "redirect:/employee/page/1";
     }
 
 }
