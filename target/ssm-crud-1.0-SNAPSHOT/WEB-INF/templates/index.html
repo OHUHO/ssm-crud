@@ -87,7 +87,7 @@
                         <button class="btn btn-warning btn-sm"
                                 data-toggle="modal"
                                 data-target="#editModal"
-                                @click="editEmployee(employee)">
+                                @click="editEmployeeBtn(employee)">
                             <span class="glyphicon glyphicon-pencil"></span>
                             Edit
                         </button>
@@ -96,7 +96,7 @@
                         <button class="btn btn-danger btn-sm"
                                 data-toggle="modal"
                                 data-target="#deleteModal"
-                                @click="deleteEmployee(employee.id)">
+                                @click="deleteEmployeeBtn(employee.id, employee.name)">
                             <span class="glyphicon glyphicon-trash"></span>
                             Delete
                         </button>
@@ -201,7 +201,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Department</label>
                                 <div class="col-sm-3">
-                                    <select class="form-control" @change="change($event)">
+                                    <select class="form-control" v-model="newEmployee.deptId">
                                         <option v-for="department in allDepartment" :value="department.id">
                                             {{department.deptName}}
                                         </option>
@@ -238,19 +238,55 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Name</label>
                                 <div class="col-sm-3">
-                                    <input class="form-control" type="text"/>
+                                    <input class="form-control"
+                                           type="text"
+                                           placeholder="Enter Name"
+                                           v-model="editEmployee.name"/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2">Full Name</label>
+                                <label class="control-label col-sm-2">Gender</label>
                                 <div class="col-sm-3">
-                                    <input class="form-control" type="text"/>
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               name="inlineRadioOptions"
+                                               value="男"
+                                               v-model="editEmployee.gender">男
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               name="inlineRadioOptions"
+                                               value="女"
+                                               v-model="editEmployee.gender">女
+                                    </label>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" >Email</label>
+                                <label class="control-label col-sm-2">Email</label>
                                 <div class="col-sm-3">
-                                    <input class="form-control" type="email"/>
+                                    <input class="form-control"
+                                           type="email"
+                                           placeholder="Enter Email"
+                                           v-model="editEmployee.email"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Phone</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control"
+                                           type="text"
+                                           placeholder="Enter Phone"
+                                           v-model="editEmployee.phone"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Department</label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" v-model="editEmployee.deptId">
+                                        <option v-for="department in allDepartment" :value="department.id">
+                                            {{department.deptName}}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                         </form>
@@ -260,8 +296,8 @@
                     <button class="btn btn-success"
                             type="button"
                             data-dismiss="modal"
-                            @click="">
-                        Save
+                            @click="updateEmployee()">
+                        Update
                     </button>
                     <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
                 </div>
@@ -278,10 +314,12 @@
                     <h4 class="modal-title">Delete</h4>
                 </div>
                 <div class="modal-body">
-                    <h3>Are you sure to delete <span>XXXXXxxx</span>????</h3>
+                    <h3>Are you sure to delete employee : <span>{{delEmployeeName}}</span> ?</h3>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" type="button" data-dismiss="modal">Yes</button>
+                    <button class="btn btn-danger"
+                            type="button"
+                            data-dismiss="modal" @click="deleteEmployee()">Yes</button>
                     <button class="btn btn-primary" type="button" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -300,7 +338,9 @@
             alertMessage:null,
             allDepartment: null,
             employeePage:[],
+            delEmployeeName:"",
             newEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:'',deptName:null},
+            editEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:null,deptName:null},
         },
         mounted(){
             this.getEmployeePage(1);
@@ -318,17 +358,33 @@
                     this.allDepartment = resp.data
                 })
             },
-            change(event){
-                this.newEmployee.deptId = event.target.value
-            },
             clickedAlert(){
                 this.alertMessage = null;
             },
             addNewEmployee(){
+                console.log("add new employee:")
+                console.log(this.newEmployee)
                 axios.post("/crud/employee",this.newEmployee).then(resp => {
                     this.alertMessage = 'New employee add on list successfully!'
                 })
+            },
+            editEmployeeBtn(employee){
+                this.getAllDepartment()
+                // 数据的回显, 将选中的员工设置为待修改的用户
+                this.editEmployee = employee;
+            },
+            deleteEmployeeBtn(id, name){
+                this.delEmployeeId = id
+                this.delEmployeeName = name
+            },
+            updateEmployee(){
+                console.log("update employee:")
+                console.log(this.editEmployee)
+            },
+            deleteEmployee(){
+                console.log("员工id：", this.delEmployeeId)
             }
+
         }
     });
 </script>
