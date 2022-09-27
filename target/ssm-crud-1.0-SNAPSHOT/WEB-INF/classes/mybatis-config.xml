@@ -18,7 +18,9 @@
 	</settings>
 
 	<plugins>
-		<plugin interceptor="com.github.pagehelper.PageInterceptor"/>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor">
+			<property name="reasonable" value="true"/>
+		</plugin>
 	</plugins>
 
 </configuration>

@@ -2,14 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>首页</title>
+    <title>员工列表</title>
     <link rel="stylesheet" href="/crud/static/bootstrap-3.4.1-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/crud/static/css/style.css">
 </head>
 <body>
-<!--<div style="text-align: center">
-    <a th:href="@{/employee/page/1}">查看员工列表</a>
-</div>-->
 
 <div class="container box" id="app">
 
@@ -76,7 +73,7 @@
                     <th>Delete</th>
                 </tr>
                 <tr class="text-center"
-                    v-if="employeePage"
+                    v-if="employeePage.list != null"
                     v-for="(employee,index) in employeePage.list">
                     <td><input type="checkbox"></td>
                     <td>{{index+1}}</td>
@@ -109,6 +106,7 @@
         </div>
     </div>
 
+    <!-- 分页导航区域 -->
     <div class="row">
         <div class="col-md-6">
             <h6>恭喜您，您走过了 {{employeePage.pageNum}}/{{employeePage.pages}} 的路程！</h6>
@@ -117,32 +115,37 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li :class="{disabled:employeePage.isFirstPage}">
-                        <a href="#" @click="getEmployeePage(1)">首页</a>
+                        <a @click="getEmployeePage(1)">首页</a>
                     </li>
                     <li :class="{disabled:employeePage.isFirstPage}">
-                        <a href="#" aria-label="Previous" @click="getEmployeePage(employeePage.prePage)">
+                        <a aria-label="Previous" @click="getEmployeePage(employeePage.prePage)">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li :class="{active:employeePage.pageNum == num}"
                         v-for="num in employeePage.navigatepageNums">
-                        <a href="#" @click="getEmployeePage(num)">{{num}}</a>
+                        <a @click="getEmployeePage(num)">{{num}}</a>
                     </li>
                     <li :class="{disabled:employeePage.isLastPage}">
-                        <a href="#" aria-label="Next" @click="getEmployeePage(employeePage.nextPage)">
+                        <a aria-label="Next"
+                           v-if="employeePage.isLastPage">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                        <a aria-label="Next"
+                           v-else
+                           @click="getEmployeePage(employeePage.nextPage)">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                     <li :class="{disabled:employeePage.isLastPage}">
-                        <a href="#" @click="getEmployeePage(employeePage.pages)">尾页</a>
+                        <a @click="getEmployeePage(employeePage.pages)">尾页</a>
                     </li>
                 </ul>
             </nav>
         </div>
     </div>
 
-
-    <!-- Add Modal-->
+    <!-- 添加窗口 -->
     <div class="modal fade" id="addModal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -225,7 +228,7 @@
             </div>
         </div>
     </div>
-    <!-- Edit Modal-->
+    <!-- 编辑窗口-->
     <div class="modal fade" id="editModal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -270,7 +273,7 @@
             </div>
         </div>
     </div>
-    <!-- Delete Modal-->
+    <!-- 删除窗口-->
     <div class="modal fade" id="deleteModal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -301,7 +304,7 @@
         data:{
             alertMessage:null,
             allDepartment: null,
-            employeePage:null,
+            employeePage:[],
             newEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:'',deptName:null},
         },
         mounted(){
