@@ -29,7 +29,22 @@
 
 	<!-- void updateEmployee(Emp emp); -->
 	<update id="updateEmployee">
-		update t_employee set name = #{name} and gender = #{} and email = #{email} and phone = #{phone} and departmentId = #{deptId} where id = #{id}
+		update t_employee
+		<set>
+			<if test="gender != null and gender != '' ">
+				gender = #{gender},
+			</if>
+			<if test="email != null and email != '' ">
+				email = #{email},
+			</if>
+		    <if test="phone != null and phone != ''">
+		    	phone = #{phone}
+			</if>
+		    <if test="deptId != null and deptId != 0">
+			    departmentId = #{deptId}
+		    </if>
+		</set>
+		where id = #{id}
 	</update>
 
 </mapper>

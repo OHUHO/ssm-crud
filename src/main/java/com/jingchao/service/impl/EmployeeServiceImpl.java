@@ -36,6 +36,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void updateEmployee(Emp emp) {
-        employeeMapper.updateEmployee(emp);
+        // employeeMapper.updateEmployee(emp);
     }
 }

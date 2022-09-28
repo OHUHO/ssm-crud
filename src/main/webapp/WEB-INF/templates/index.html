@@ -341,6 +341,7 @@
             delEmployeeName:"",
             newEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:'',deptName:null},
             editEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:null,deptName:null},
+            tempEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:null,deptName:null},
         },
         mounted(){
             this.getEmployeePage(1);
@@ -372,17 +373,35 @@
                 this.getAllDepartment()
                 // 数据的回显, 将选中的员工设置为待修改的用户
                 this.editEmployee = employee;
+                // 将待修改 的员工信息拷贝一份
+                // 防止data中的两个变量指向同一地址
+                this.tempEmployee = JSON.parse(JSON.stringify(employee));
             },
             deleteEmployeeBtn(id, name){
                 this.delEmployeeId = id
                 this.delEmployeeName = name
             },
             updateEmployee(){
-                console.log("update employee:")
-                console.log(this.editEmployee)
-                axios.put("/crud/employee",this.editEmployee).then( resp => {
-                   this.editEmployee = null;
-                })
+                // 判读是否修改过改员工
+                if(JSON.stringify(this.editEmployee) != JSON.stringify(this.tempEmployee)){
+                    // 进一步判断修改过那些字段（性别、邮箱、手机号、部门id）
+                    this.equalsUpdateField()
+                    console.log("update employee:")
+                    console.log(this.tempEmployee)
+                    axios.put("/crud/employee",this.tempEmployee).then( resp => {
+                        this.alertMessage = 'Update employee add on list successfully!'
+                    })
+                }
+            },
+            equalsUpdateField(){
+                // 判断修改过那些字段，并且将未修改过的字段设置为null
+                for (const i in this.editEmployee) {
+                    if (i != "id" && this.editEmployee[i] == this.tempEmployee[i]){
+                        this.tempEmployee[i] = null
+                    }else {
+                        this.tempEmployee[i] = this.editEmployee[i]
+                    }
+                }
             },
             deleteEmployee(){
                 console.log("员工id：", this.delEmployeeId)
@@ -391,7 +410,6 @@
                     this.delEmployeeName = null;
                 })
             }
-
         }
     });
 </script>
