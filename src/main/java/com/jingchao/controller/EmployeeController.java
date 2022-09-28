@@ -29,7 +29,8 @@ public class EmployeeController {
         return "employee";
     } */
 
-    @PostMapping("/employee")
+    // @PostMapping("/employee")
+    @RequestMapping(value = "/employee", method = RequestMethod.POST)
     public void addNewEmployee(@RequestBody Emp emp){
         employeeService.addNewEmployee(emp);
     }
@@ -39,4 +40,10 @@ public class EmployeeController {
         employeeService.updateEmployee(emp);
     }
 
+    @RequestMapping(value = "/employee/{id}", method = RequestMethod.DELETE)
+    public String deleteEmployeeById(@PathVariable("id") Integer id){
+        System.out.println(id);
+        employeeService.deleteEmployeeById(id);
+        return "index";
+    }
 }

@@ -241,7 +241,8 @@
                                     <input class="form-control"
                                            type="text"
                                            placeholder="Enter Name"
-                                           v-model="editEmployee.name"/>
+                                           v-model="editEmployee.name"
+                                           disabled/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -339,6 +340,7 @@
             allDepartment: null,
             employeePage:[],
             delEmployeeName:"",
+            delEmployeeId:null,
             newEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:'',deptName:null},
             editEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:null,deptName:null},
             tempEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:null,deptName:null},

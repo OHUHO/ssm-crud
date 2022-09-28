@@ -14,13 +14,13 @@
 		<result column="departmentId" property="deptId"></result>
 		<result column="dept_name" property="deptName"></result>
 	</resultMap>
+
 	<select id="getAllEmployee" resultMap="empResultMap">
 		select t_employee.id,workId,name,gender,email,phone,t_employee.departmentId,t_department.dept_name
 		from t_employee
 			     left join t_department on
 			t_employee.departmentId = t_department.id
 	</select>
-
 
 	<!-- void addNewEmployee(Emp emp); -->
 	<insert id="addNewEmployee">
@@ -46,5 +46,10 @@
 		</set>
 		where id = #{id}
 	</update>
+
+	<!-- void deleteEmployeeById(Integer id); -->
+	<delete id="deleteEmployeeById">
+		delete from t_employee where id = #{id}
+	</delete>
 
 </mapper>

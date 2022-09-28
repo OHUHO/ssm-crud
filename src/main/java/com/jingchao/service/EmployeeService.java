@@ -23,4 +23,10 @@ public interface EmployeeService {
      * 修改用户信息
      */
     void updateEmployee(Emp emp);
+
+    /**
+     * 根据员工id删除员工
+     * @param id
+     */
+    void deleteEmployeeById(Integer id);
 }

@@ -2,6 +2,7 @@ package com.jingchao.mapper;
 
 import com.jingchao.entity.Employee;
 import com.jingchao.pojo.Emp;
+import org.apache.ibatis.annotations.Param;
 
 
 import java.util.List;
@@ -27,4 +28,10 @@ public interface EmployeeMapper {
      * @param emp
      */
     void updateEmployee(Emp emp);
+
+    /**
+     * 根据员工id删除
+     * @param id
+     */
+    void deleteEmployeeById(@Param("id") Integer id);
 }

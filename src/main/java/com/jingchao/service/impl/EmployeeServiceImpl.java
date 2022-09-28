@@ -31,11 +31,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void addNewEmployee(Emp emp) {
-        // employeeMapper.addNewEmployee(emp);
+        employeeMapper.addNewEmployee(emp);
     }
 
     @Override
     public void updateEmployee(Emp emp) {
-        // employeeMapper.updateEmployee(emp);
+        employeeMapper.updateEmployee(emp);
+    }
+
+    @Override
+    public void deleteEmployeeById(Integer id) {
+        employeeMapper.deleteEmployeeById(id);
     }
 }
