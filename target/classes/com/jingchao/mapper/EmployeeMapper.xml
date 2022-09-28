@@ -27,4 +27,9 @@
 		insert into t_employee(id,name,workId,gender,email,phone,departmentId) values (null,#{name},#{workId},#{gender},#{email},#{phone},#{deptId})
 	</insert>
 
+	<!-- void updateEmployee(Emp emp); -->
+	<update id="updateEmployee">
+		update t_employee set name = #{name} and gender = #{} and email = #{email} and phone = #{phone} and departmentId = #{deptId} where id = #{id}
+	</update>
+
 </mapper>

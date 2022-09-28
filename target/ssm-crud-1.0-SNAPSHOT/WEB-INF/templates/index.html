@@ -380,9 +380,16 @@
             updateEmployee(){
                 console.log("update employee:")
                 console.log(this.editEmployee)
+                axios.put("/crud/employee",this.editEmployee).then( resp => {
+                   this.editEmployee = null;
+                })
             },
             deleteEmployee(){
                 console.log("员工id：", this.delEmployeeId)
+                axios.delete("/crud/employee/"+this.delEmployeeId).then(resp =>{
+                    this.delEmployeeId = null;
+                    this.delEmployeeName = null;
+                })
             }
 
         }

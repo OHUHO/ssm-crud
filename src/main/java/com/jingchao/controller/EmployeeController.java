@@ -34,4 +34,9 @@ public class EmployeeController {
         employeeService.addNewEmployee(emp);
     }
 
+    @RequestMapping(value = "/employee",method = RequestMethod.PUT)
+    public void updateEmployee(@RequestBody Emp emp){
+        employeeService.updateEmployee(emp);
+    }
+
 }

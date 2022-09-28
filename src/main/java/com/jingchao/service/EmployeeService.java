@@ -18,4 +18,9 @@ public interface EmployeeService {
      * @param emp
      */
     void addNewEmployee(Emp emp);
+
+    /**
+     * 修改用户信息
+     */
+    void updateEmployee(Emp emp);
 }

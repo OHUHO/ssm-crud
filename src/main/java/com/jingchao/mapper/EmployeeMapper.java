@@ -21,4 +21,10 @@ public interface EmployeeMapper {
      * @param emp
      */
     void addNewEmployee(Emp emp);
+
+    /**
+     * 更新员工信息
+     * @param emp
+     */
+    void updateEmployee(Emp emp);
 }
