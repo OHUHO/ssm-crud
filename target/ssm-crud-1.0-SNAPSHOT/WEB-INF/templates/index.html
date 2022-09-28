@@ -61,7 +61,11 @@
         <div class="col-md-12">
             <table class="table table-bordered">
                 <tr class="text-center">
-                    <th><input type="checkbox"></th>
+                    <th>
+                        <input type="checkbox"
+                               v-model="allChecked"
+                               @click="checkAll()">
+                    </th>
                     <th>Index</th>
                     <th>Work Id</th>
                     <th>Name</th>
@@ -75,7 +79,11 @@
                 <tr class="text-center"
                     v-if="employeePage.list != null"
                     v-for="(employee,index) in employeePage.list">
-                    <td><input type="checkbox"></td>
+                    <td>
+                        <input type="checkbox"
+                               v-model="employee.isChecked"
+                               @click="checkOne(employee.id)">
+                    </td>
                     <td>{{index+1}}</td>
                     <td>{{employee.workId}}</td>
                     <td>{{employee.name}}</td>
@@ -341,12 +349,17 @@
             employeePage:[],
             delEmployeeName:"",
             delEmployeeId:null,
+            allChecked:false,
             newEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:'',deptName:null},
             editEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:null,deptName:null},
             tempEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:null,deptName:null},
         },
-        mounted(){
+        created(){
             this.getEmployeePage(1);
+            // 给每一条数据添加checked字段，初始为false
+            this.employeePage.list.forEach(employee => {
+                this.$set(employee,'isChecked',false)
+            })
         },
         methods:{
             // 获取员工的分页信息
@@ -406,13 +419,36 @@
                 }
             },
             deleteEmployee(){
-                console.log("员工id：", this.delEmployeeId)
                 axios.delete("/crud/employee/"+this.delEmployeeId).then(resp =>{
                     this.delEmployeeId = null;
                     this.delEmployeeName = null;
                 })
+            },
+            // 全选
+            checkAll(){
+                this.employeePage.list.map((employee) => {
+                    employee.isChecked = !employee.isChecked
+                    // this.employeePage. list.isChecked = !this.employeePage. list.isChecked
+                })
+                /*for (let i = 0; i < this.employeePage.list; i++) {
+                    this.employeePage. list.isChecked = !this.employeePage. list.isChecked
+                }*/
+            },
+            checkOne(id){
+                /*this.employeePage.list.forEach(employee =>{
+                    if(employee.id == id){
+                        this.employeePage.list.checked = !this.employeePage.list.checked
+                    }
+                })*/
+                this.employeePage.list.map((employee) => {
+                    if (employee.id == id){
+                        this.employeePage. list.isChecked = !this.employeePage. list.isChecked
+                    }
+                })
             }
-        }
+
+        },
+
     });
 </script>
 
