@@ -323,7 +323,7 @@
                     <h4 class="modal-title">Delete</h4>
                 </div>
                 <div class="modal-body">
-                    <h3>Are you sure to delete employee : <span>{{delEmployeeName}}</span> ?</h3>
+                    <h3>确定删除员工 : <span>{{delEmployeeName}}</span> ?</h3>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger"
@@ -381,7 +381,7 @@
                 console.log("add new employee:")
                 console.log(this.newEmployee)
                 axios.post("/crud/employee",this.newEmployee).then(resp => {
-                    this.alertMessage = 'New employee add on list successfully!'
+                    this.alertMessage = '成功添加员工！'
                 })
             },
             editEmployeeBtn(employee){
@@ -404,7 +404,7 @@
                     console.log("update employee:")
                     console.log(this.tempEmployee)
                     axios.put("/crud/employee",this.tempEmployee).then( resp => {
-                        this.alertMessage = 'Update employee add on list successfully!'
+                        this.alertMessage = '成功更新员工信息！'
                     })
                 }
             },
@@ -422,7 +422,12 @@
                 axios.delete("/crud/employee/"+this.delEmployeeId).then(resp =>{
                     this.delEmployeeId = null;
                     this.delEmployeeName = null;
+                    this.alertMessage = '成功删除该员工！'
                 })
+            },
+            // 批量删除
+            batchDeleteEmployee(){
+
             },
             // 全选
             checkAll(){
