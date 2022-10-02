@@ -34,7 +34,7 @@
             <button type="button"
                     class="btn btn-danger"
                     data-toggle="modal"
-                    data-target="#deleteModal">
+                    data-target="#batchDeleteModal">
                 <span class="glyphicon glyphicon-trash"></span>
                 删除
             </button>
@@ -114,7 +114,6 @@
         </div>
     </div>
 
-
     <!-- 分页导航区域 -->
     <div class="row">
         <div class="col-md-6">
@@ -147,12 +146,6 @@
                     </li>
                 </ul>
             </nav>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            {{checkedIds}}
         </div>
     </div>
 
@@ -341,6 +334,35 @@
             </div>
         </div>
     </div>
+    <!-- 批量删除窗口-->
+    <div class="modal fade" id="batchDeleteModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close"
+                            type="button"
+                            data-dismiss="modal">×
+                    </button>
+                    <h4 class="modal-title">Delete</h4>
+                </div>
+                <div class="modal-body">
+                    <h3>确定删除选中的全部员工</span> ?</h3>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger"
+                            type="button"
+                            data-dismiss="modal"
+                            @click="batchDeleteEmployee()">Yes
+                    </button>
+                    <button class="btn btn-primary"
+                            type="button"
+                            data-dismiss="modal">No
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 <script type="text/javascript" src="/crud/static/js/jquery-2.2.4.min.js"></script>
@@ -374,6 +396,7 @@
                 axios.post("/crud/employee/page/"+pageNum).then(resp => {
                     this.employeePage = resp.data;
                 })
+                this.checkedIds = [];
             },
 
             getAllDepartment(){
@@ -438,10 +461,7 @@
                     this.alertMessage = '成功删除该员工！'
                 })
             },
-            // 批量删除
-            batchDeleteEmployee(){
 
-            },
             // 全选
             handleCheckAll(e){
                 if(e.target.checked){
@@ -449,6 +469,13 @@
                 }else{
                     this.checkedIds = [];
                 }
+            },
+            // 批量删除
+            batchDeleteEmployee(){
+                const ids = JSON.stringify(this.checkedIds)
+                axios.delete("/crud/employee",{data:this.checkedIds}).then(resp => {
+                    this.alertMessage = "成功删除选中员工！"
+                })
             },
 
         },

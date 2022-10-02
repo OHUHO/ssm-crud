@@ -3,6 +3,8 @@ package com.jingchao.service;
 import com.github.pagehelper.PageInfo;
 import com.jingchao.pojo.Emp;
 
+import java.util.List;
+
 public interface EmployeeService {
 
     /**
@@ -29,4 +31,10 @@ public interface EmployeeService {
      * @param id
      */
     void deleteEmployeeById(Integer id);
+
+    /**
+     * 批量删除员工
+     * @param ids
+     */
+    void batchDeleteEmployee(List<Integer> ids);
 }

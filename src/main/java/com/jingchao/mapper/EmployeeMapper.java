@@ -34,4 +34,10 @@ public interface EmployeeMapper {
      * @param id
      */
     void deleteEmployeeById(@Param("id") Integer id);
+
+    /**
+     * 批量删除员工
+     * @param ids
+     */
+    void batchDeleteEmployee(@Param("ids") List<Integer> ids);
 }

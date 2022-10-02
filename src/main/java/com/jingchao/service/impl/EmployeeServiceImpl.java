@@ -43,4 +43,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteEmployeeById(Integer id) {
         employeeMapper.deleteEmployeeById(id);
     }
+
+    @Override
+    public void batchDeleteEmployee(List<Integer> ids) {
+        employeeMapper.batchDeleteEmployee(ids);
+    }
 }

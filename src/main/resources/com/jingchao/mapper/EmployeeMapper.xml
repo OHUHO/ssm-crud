@@ -52,4 +52,12 @@
 		delete from t_employee where id = #{id}
 	</delete>
 
+	<!-- void batchDeleteEmployee(String ids); -->
+	<delete id="batchDeleteEmployee">
+		delete from t_employee where
+		<foreach collection="ids" item="id" separator="or">
+			id = #{id}
+		</foreach>
+	</delete>
+
 </mapper>

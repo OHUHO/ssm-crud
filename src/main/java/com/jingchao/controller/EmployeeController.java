@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Controller
 public class EmployeeController {
 
@@ -42,8 +45,13 @@ public class EmployeeController {
 
     @RequestMapping(value = "/employee/{id}", method = RequestMethod.DELETE)
     public String deleteEmployeeById(@PathVariable("id") Integer id){
-        System.out.println(id);
         employeeService.deleteEmployeeById(id);
+        return "index";
+    }
+
+    @RequestMapping(value = "/employee", method = RequestMethod.DELETE)
+    public String batchDeleteEmployee(@RequestBody List<Integer> ids){
+        employeeService.batchDeleteEmployee(ids);
         return "index";
     }
 }
