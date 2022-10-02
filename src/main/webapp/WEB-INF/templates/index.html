@@ -29,14 +29,14 @@
                     data-target="#addModal"
                     @click="getAllDepartment()">
                 <span class="glyphicon glyphicon-plus"></span>
-                Add
+                添加
             </button>
             <button type="button"
                     class="btn btn-danger"
                     data-toggle="modal"
                     data-target="#deleteModal">
                 <span class="glyphicon glyphicon-trash"></span>
-                Delete
+                删除
             </button>
         </div>
     </div>
@@ -63,26 +63,26 @@
                 <tr class="text-center">
                     <th>
                         <input type="checkbox"
-                               v-model="allChecked"
-                               @click="checkAll()">
+                               @change="handleCheckAll"
+                               :checked="checkedIds.length === employeePage.list.length && employeePage.list.length !=0">
                     </th>
-                    <th>Index</th>
-                    <th>Work Id</th>
-                    <th>Name</th>
-                    <th>Gender</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Department</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>索引</th>
+                    <th>工号</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>邮箱</th>
+                    <th>手机号</th>
+                    <th>部门</th>
+                    <th>编辑</th>
+                    <th>删除</th>
                 </tr>
                 <tr class="text-center"
                     v-if="employeePage.list != null"
                     v-for="(employee,index) in employeePage.list">
                     <td>
                         <input type="checkbox"
-                               v-model="employee.isChecked"
-                               @click="checkOne(employee.id)">
+                               :value="employee.id"
+                               v-model="checkedIds">
                     </td>
                     <td>{{index+1}}</td>
                     <td>{{employee.workId}}</td>
@@ -97,7 +97,7 @@
                                 data-target="#editModal"
                                 @click="editEmployeeBtn(employee)">
                             <span class="glyphicon glyphicon-pencil"></span>
-                            Edit
+                            编辑
                         </button>
                     </td>
                     <td>
@@ -106,13 +106,14 @@
                                 data-target="#deleteModal"
                                 @click="deleteEmployeeBtn(employee.id, employee.name)">
                             <span class="glyphicon glyphicon-trash"></span>
-                            Delete
+                            删除
                         </button>
                     </td>
                 </tr>
             </table>
         </div>
     </div>
+
 
     <!-- 分页导航区域 -->
     <div class="row">
@@ -146,6 +147,12 @@
                     </li>
                 </ul>
             </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            {{checkedIds}}
         </div>
     </div>
 
@@ -349,7 +356,7 @@
             employeePage:[],
             delEmployeeName:"",
             delEmployeeId:null,
-            allChecked:false,
+            checkedIds:[],
             newEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:'',deptName:null},
             editEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:null,deptName:null},
             tempEmployee:{id:null,workId:null,name:'',gender:'',email:'',phone:'',deptId:null,deptName:null},
@@ -357,9 +364,9 @@
         created(){
             this.getEmployeePage(1);
             // 给每一条数据添加checked字段，初始为false
-            this.employeePage.list.forEach(employee => {
+            /*this.employeePage.list.forEach(employee => {
                 this.$set(employee,'isChecked',false)
-            })
+            })*/
         },
         methods:{
             // 获取员工的分页信息
@@ -374,9 +381,11 @@
                     this.allDepartment = resp.data
                 })
             },
+
             clickedAlert(){
                 this.alertMessage = null;
             },
+
             addNewEmployee(){
                 console.log("add new employee:")
                 console.log(this.newEmployee)
@@ -384,6 +393,7 @@
                     this.alertMessage = '成功添加员工！'
                 })
             },
+
             editEmployeeBtn(employee){
                 this.getAllDepartment()
                 // 数据的回显, 将选中的员工设置为待修改的用户
@@ -396,6 +406,8 @@
                 this.delEmployeeId = id
                 this.delEmployeeName = name
             },
+
+            //修改员工信息
             updateEmployee(){
                 // 判读是否修改过改员工
                 if(JSON.stringify(this.editEmployee) != JSON.stringify(this.tempEmployee)){
@@ -408,8 +420,8 @@
                     })
                 }
             },
+            // 判断修改过那些字段，并且将未修改过的字段设置为null
             equalsUpdateField(){
-                // 判断修改过那些字段，并且将未修改过的字段设置为null
                 for (const i in this.editEmployee) {
                     if (i != "id" && this.editEmployee[i] == this.tempEmployee[i]){
                         this.tempEmployee[i] = null
@@ -418,6 +430,7 @@
                     }
                 }
             },
+
             deleteEmployee(){
                 axios.delete("/crud/employee/"+this.delEmployeeId).then(resp =>{
                     this.delEmployeeId = null;
@@ -430,27 +443,13 @@
 
             },
             // 全选
-            checkAll(){
-                this.employeePage.list.map((employee) => {
-                    employee.isChecked = !employee.isChecked
-                    // this.employeePage. list.isChecked = !this.employeePage. list.isChecked
-                })
-                /*for (let i = 0; i < this.employeePage.list; i++) {
-                    this.employeePage. list.isChecked = !this.employeePage. list.isChecked
-                }*/
+            handleCheckAll(e){
+                if(e.target.checked){
+                    this.checkedIds = this.employeePage.list.map((employee) => employee.id);
+                }else{
+                    this.checkedIds = [];
+                }
             },
-            checkOne(id){
-                /*this.employeePage.list.forEach(employee =>{
-                    if(employee.id == id){
-                        this.employeePage.list.checked = !this.employeePage.list.checked
-                    }
-                })*/
-                this.employeePage.list.map((employee) => {
-                    if (employee.id == id){
-                        this.employeePage. list.isChecked = !this.employeePage. list.isChecked
-                    }
-                })
-            }
 
         },
 
